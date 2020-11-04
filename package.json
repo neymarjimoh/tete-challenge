@@ -1,0 +1,65 @@
+{
+  "name": "tete-challenge",
+  "version": "1.0.0",
+  "description": "an application that helps team store tasks and track them upon completion",
+  "main": "server.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test:watch": "cross-env NODE_ENV=test jest --watch --verbose",
+    "test:ci": "cross-env NODE_ENV=test jest --coverage --verbose &&  cat ./coverage/lcov.info | coveralls",
+    "test:codacy": "cross-env NODE_ENV=test jest --coverage --verbose &&  cat ./coverage/lcov.info | codacy-coverage",
+    "test:cover": "cross-env NODE_ENV=test jest --coverage --verbose",
+    "lint": "eslint \"src/**/*.js\"",
+    "lint:fix": "eslint --fix \"src/**/*.js\"",
+    "build": "babel src --out-dir dist --delete-dir-on-start --ignore '**/*.test.js'",
+    "dev": "cross-env DEBUG=log NODE_ENV=development nodemon --exec babel-node ./src/server.js",
+    "start": "cross-env DEBUG=log NODE_ENV=production node ./dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neymarjimoh/tete-challenge.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "tete",
+    "tasks",
+    "api",
+    "mongoose",
+    "jest",
+    "es6",
+    "eslint"
+  ],
+  "author": "@JnrJimoh <jemohkunle2007@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neymarjimoh/tete-challenge/issues"
+  },
+  "homepage": "https://github.com/neymarjimoh/tete-challenge#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "debug": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "mongoose": "^5.10.11",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-jest": "^26.6.2",
+    "codacy-coverage": "^3.4.0",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.6.2",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.1.2",
+    "supertest": "^6.0.0"
+  }
+}
