@@ -1,4 +1,4 @@
-import responseHandler from "../responses/responseHandler";
+import responseHandler from "../responseHandler";
 import express from "express";
 import request from "supertest";
 
@@ -15,14 +15,14 @@ describe("Unit test responseHandler", () => {
   it("should return formatted response", async () => {
     const response = await request(app).get("/");
     expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(1);
-    expect(response.body.message).toBe("Some optional message");
+    expect(response.body.data.length).toBe(21);
+    expect(response.body.data).toBe("Some optional message");
   });
 
   it("should return formatted response with default arguments", async () => {
     const response = await request(app).get("/default");
     expect(response.status).toBe(200);
-    expect(response.body.data.length).toBe(0);
-    expect(response.body.message).toBe("");
+    expect(response.body.status).toBe("success");
+    expect(response.body.message).toBe(undefined);
   });
 });

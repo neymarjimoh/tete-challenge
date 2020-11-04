@@ -11,11 +11,3 @@ describe("Server runs", () => {
     expect(response.status).toBe(404);
   });
 });
-
-describe("Server runs", () => {
-  test("Should return status 200 and render Swagger docs", async () => {
-    const res = await request(app).get("/");
-    expect(res.status).toBe(200);
-    expect(res.text).toMatchSnapshot();
-  });
-});
