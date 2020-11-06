@@ -1,4 +1,4 @@
-const Todo = require("../models/todo");
+const Todo = require("../models/todo").default;
 const { InternalServerError, CustomError } = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const validateDate = require("../utils/checkDate").default;

@@ -1,6 +1,5 @@
-// import { Schema, model } from "mongoose";
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from "mongoose";
+const Schema = _Schema;
 const todoSchema = new Schema(
   {
     title: {
@@ -21,5 +20,4 @@ const todoSchema = new Schema(
   }
 );
 
-// export default model("Todo", todoSchema);
-module.exports = mongoose.model("Todo", todoSchema);
+export default model("Todo", todoSchema);

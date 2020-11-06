@@ -1,1 +1,1 @@
-export const Todo = require("./todo");
+export const Todo = require("./todo").default;
