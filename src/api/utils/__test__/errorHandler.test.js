@@ -1,5 +1,5 @@
 import errorHandler from "../errorHandler";
-import CustomError from "../customError";
+import { CustomError } from "../customError";
 import express from "express";
 import request from "supertest";
 

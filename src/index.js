@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dbConnect from "./api/config/db";
-import CustomError from "./api/utils/customError";
+import { CustomError } from "./api/utils/customError";
 import errorHandler from "./api/utils/errorHandler";
 import responseHandler from "./api/utils/responseHandler";
 import apiRouter from "./api/routes";

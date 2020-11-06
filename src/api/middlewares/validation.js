@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import CustomError from "../../utils/errors/customError";
+import { CustomError } from "../utils/customError";
 
 const validationMW = (req, res, next) => {
   const errors = validationResult(req);
@@ -10,7 +10,6 @@ const validationMW = (req, res, next) => {
   const errorsArray = [];
   errors.array().map((error) => errorsArray.push({ [error.param]: error.msg }));
 
-  // console.log(errorsArray);
   return next(
     new CustomError(
       422,
