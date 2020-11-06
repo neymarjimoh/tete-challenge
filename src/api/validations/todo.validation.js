@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, check } from "express-validator";
 // import { Todo } from "../models/";
 
 const addTodoRules = () => {
@@ -18,29 +18,26 @@ const addTodoRules = () => {
   ];
 };
 
-const mealValidation = () => {
+const sortBy = ["title", "createdAt", "dueDate"];
+
+const getTodosRules = () => {
   return [
-    body("meal_name")
-      .trim()
-      .isString()
-      .not()
-      .isEmpty()
-      .withMessage("Meal Name is required"),
-    body("description")
-      .trim()
-      .isString()
-      .not()
-      .isEmpty()
-      .withMessage("Description is required"),
-    body("price").notEmpty().withMessage("Price is required"),
-    body("option1").trim().isNumeric(),
-    body("option2").trim().isString(),
-    body("image1_url").isString(),
-    body("image2_url").isString(),
+    check("completed")
+      .optional()
+      .isIn(["true", "false"])
+      .withMessage("Filtering by completed is either true or false"),
+    check("sortBy")
+      .optional()
+      .custom((val) => {
+        if (!sortBy.includes(val.split(":")[0]))
+          // ?sortBy=title:desc ?sortBy=createdAt:asc etc..
+          throw new Error("Sorting can only be by title, dueDate or createdAt");
+        return true;
+      }),
   ];
 };
 
 export default {
-  mealValidation,
+  getTodosRules,
   addTodoRules,
 };

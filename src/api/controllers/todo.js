@@ -33,6 +33,56 @@ exports.addTodoItem = async (req, res, next) => {
   }
 };
 
-exports.getTodos = async (req, res) => {
-  res.json({ msg: "done" });
+exports.getAllTodos = async (req, res, next) => {
+  try {
+    const queryOptions = {},
+      sortOptions = {};
+    let { page, limit, date, search, completed, sortBy } = req.query;
+    let todos, totalCount;
+    page = parseInt(page, 10) || 1;
+    limit = parseInt(limit, 10) || 10;
+    if (date) {
+      const isDateValid = validateDate(date);
+      if (isDateValid) {
+        queryOptions["dueDate"] = new Date(date);
+      } else {
+        return next(
+          new CustomError(422, "Invalid date format entered for filtering")
+        );
+      }
+    }
+    if (completed) {
+      completed == "true"
+        ? (queryOptions["completed"] = true)
+        : (queryOptions["completed"] = false);
+    }
+    if (search) queryOptions["title"] = { $regex: search, $options: "i" };
+    if (sortBy) {
+      const str = sortBy.split(":");
+      sortOptions[str[0]] = str[1] === "desc" ? -1 : 1;
+    } else {
+      sortOptions["createdAt"] = -1; // sorting defaults to this if sortBy query is absent
+    }
+    todos = await Todo.find(queryOptions)
+      .skip((page - 1) * limit)
+      .limit(limit * 1)
+      .sort(sortOptions)
+      .exec();
+    totalCount = await Todo.countDocuments(queryOptions);
+    if (totalCount === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "No Matching task found",
+      });
+    }
+    return res.status(200).json({
+      status: "success",
+      totalCount,
+      todos,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    next(new InternalServerError(error));
+  }
 };

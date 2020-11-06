@@ -2,7 +2,7 @@ import { Router } from "express";
 import validations from "../validations/todo.validation";
 import validationMW from "../middlewares/validation";
 // import { socialControllers } from "../controllers";
-import { addTodoItem } from "../controllers/todo";
+import { addTodoItem, getAllTodos } from "../controllers/todo";
 
 const todoRouter = Router();
 
@@ -11,11 +11,9 @@ const todoRouter = Router();
  */
 todoRouter.post("/new", validations.addTodoRules(), validationMW, addTodoItem);
 
-// Test route for the socialAuthCallback
-todoRouter.get("/", (req, res) => {
-  res.json({ message: "Todos Found" });
-});
-
-// todoRouter.get("/facebook", socialControllers.facebookController);
+/**
+ * get a list of all items route
+ */
+todoRouter.get("/", validations.getTodosRules(), validationMW, getAllTodos);
 
 export default todoRouter;
