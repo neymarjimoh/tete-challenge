@@ -66,15 +66,15 @@ npm run test
 
 **Payload**
 
-    - Paginates on default with page size set to 10 and page to 1 if not explicitly stated in query params
-    - search by title using `?search=titleword` (optional)
-    - filter by:
-        - completed: either true or false using `?completed=true` (optional)
-        - dueDate with date format `yyyy-mm-dd` using `?date=2020-11-06` (optional)
-    - sort in ascending or descending order by:
-        - title using `?sortBy=title:asc` (ascending)
-        - dueDate using `?sortBy=dueDate:desc` (descending)
-        - createdAt using `?sortBy=createdAt:asc` (ascending)
+- paginates on default with page size set to 10 and page to 1 if not explicitly stated in query params
+- search by **title** using `?search=titleword` (optional)
+- filter by:
+    - **completed**: either true or false using `?completed=true` (optional)
+    - **dueDate** with date format `yyyy-mm-dd` using `?date=2020-11-06` (optional)
+- sort in ascending or descending order by (optional):
+    - **title** using `?sortBy=title:asc` (ascending)
+    - **dueDate** using `?sortBy=dueDate:desc` (descending)
+    - **createdAt** using `?sortBy=createdAt:asc` (ascending)
 
 **Response format**
 
