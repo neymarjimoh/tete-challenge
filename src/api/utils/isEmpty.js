@@ -3,4 +3,4 @@ const isEmpty = (obj) => {
   return true;
 };
 
-console.log(isEmpty({ a: "g" }));
+export default isEmpty;

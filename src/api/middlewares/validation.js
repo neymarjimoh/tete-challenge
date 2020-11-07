@@ -1,7 +1,12 @@
+import mongoose from "mongoose";
 import { validationResult } from "express-validator";
 import { CustomError } from "../utils/customError";
 
-const validationMW = (req, res, next) => {
+const {
+  Types: { ObjectId },
+} = mongoose;
+
+export const validationMW = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     return next();
@@ -19,4 +24,14 @@ const validationMW = (req, res, next) => {
   );
 };
 
-export default validationMW;
+export const checkTodoId = (req, res, next) => {
+  const { todoId } = req.params;
+  // check if the mongoose id is valid or not
+  const isValidId =
+    ObjectId.isValid(todoId) && new ObjectId(todoId).toString() === todoId;
+  if (isValidId) {
+    return next();
+  } else {
+    return next(new CustomError(422, "Invalid Todo ID entered!!"));
+  }
+};

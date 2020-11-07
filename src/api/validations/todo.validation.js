@@ -37,7 +37,26 @@ const getTodosRules = () => {
   ];
 };
 
+const completedField = [true, false];
+
+const updateTodoRules = () => {
+  return [
+    body("completed")
+      .optional()
+      .custom((val) => {
+        if (!completedField.includes(val))
+          throw new Error("Completed should be true or false");
+        return true;
+      }),
+    body("dueDate").optional().trim(),
+    body("title")
+      .isEmpty()
+      .withMessage("You can only update completed or dueDate field"),
+  ];
+};
+
 export default {
   getTodosRules,
   addTodoRules,
+  updateTodoRules,
 };

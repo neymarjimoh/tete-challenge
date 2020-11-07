@@ -106,3 +106,33 @@ npm run test
     }
 
 #### application/json
+
+**Endpoint** `http://localhost:4000/api/v1/todos/update/` - method (patch)
+
+- updates todo item's completed or dueDate field
+
+**Payload**
+
+    {
+        "completed": true,
+        "dueDate": "2020-11-15"
+    }
+
+
+**Response format**
+
+    {
+        "status": "success",
+        "message": "Task updated successfully",
+        "data": {
+            "completed": true,
+            "_id": "5fa4c9b669993323744bf4d8",
+            "title": "start working on backend task",
+            "dueDate": "2020-11-15T00:00:00.000Z",
+            "createdAt": "2020-11-06T03:57:43.123Z",
+            "updatedAt": "2020-11-07T02:08:00.863Z",
+            "__v": 0
+        }
+    }
+
+#### application/json

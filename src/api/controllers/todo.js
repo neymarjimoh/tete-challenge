@@ -2,6 +2,7 @@ const Todo = require("../models/todo").default;
 const { InternalServerError, CustomError } = require("../utils/customError");
 const responseHandler = require("../utils/responseHandler");
 const validateDate = require("../utils/checkDate").default;
+const isEmpty = require("../utils/isEmpty").default;
 
 exports.addTodoItem = async (req, res, next) => {
   try {
@@ -83,6 +84,50 @@ exports.getAllTodos = async (req, res, next) => {
       totalPages: Math.ceil(totalCount / limit),
       currentPage: page,
     });
+  } catch (error) {
+    next(new InternalServerError(error));
+  }
+};
+
+exports.updateTodo = async (req, res, next) => {
+  try {
+    const { todoId } = req.params;
+    const { dueDate, completed } = req.body;
+    const updatedFields = {};
+    if (dueDate) {
+      const isDateValid = validateDate(dueDate);
+      if (isDateValid) {
+        updatedFields["dueDate"] = new Date(dueDate);
+      } else {
+        return next(
+          new CustomError(422, "Invalid date format entered for updating")
+        );
+      }
+    }
+    if (completed) {
+      completed == true
+        ? (updatedFields["completed"] = true)
+        : (updatedFields["completed"] = false);
+    }
+    if (isEmpty(req.body)) {
+      return next(new CustomError(422, "No changes/updates made yet."));
+    }
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      todoId,
+      {
+        $set: updatedFields,
+      },
+      { new: true }
+    );
+    if (!updatedTodo) {
+      return next(
+        new CustomError(
+          404,
+          "Todo with the ID doesn't exist or has been deleted"
+        )
+      );
+    }
+    return responseHandler(res, 200, updatedTodo, "Task updated successfully");
   } catch (error) {
     next(new InternalServerError(error));
   }
