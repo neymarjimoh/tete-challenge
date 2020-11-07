@@ -11,7 +11,7 @@ YARN version - v1.17.3
 ## Getting Started
 **Clone this repo**
 ```
-git clone https://github.com/neymarjimoh/tete-challenge.github
+git clone https://github.com/neymarjimoh/tete-challenge.git
 ```
 **Install all dependencies**
 ```
