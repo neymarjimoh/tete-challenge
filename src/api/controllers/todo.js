@@ -56,7 +56,8 @@ exports.getAllTodos = async (req, res, next) => {
         ? (queryOptions["completed"] = true)
         : (queryOptions["completed"] = false);
     }
-    if (search) queryOptions["title"] = { $regex: search, $options: "i" };
+    if (search)
+      queryOptions["title"] = { $regex: new RegExp(search), $options: "i" };
     if (sortBy) {
       const str = sortBy.split(":");
       sortOptions[str[0]] = str[1] === "desc" ? -1 : 1;

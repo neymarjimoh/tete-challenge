@@ -59,3 +59,50 @@ npm run test
     }
 
 #### application/json
+
+**Endpoint** `http://localhost:4000/api/v1/todos?page=1&limit=10&search=working$completed=false$date=2020-11-11&sortBy=dueDate:desc` - method (GET)
+
+- Gets list of todo items
+
+**Payload**
+
+    - Paginates on default with page size set to 10 and page to 1 if not explicitly stated in query params
+    - search by title using `?search=titleword` (optional)
+    - filter by:
+        - completed: either true or false using `?completed=true` (optional)
+        - dueDate with date format `yyyy-mm-dd` using `?date=2020-11-06` (optional)
+    - sort in ascending or descending order by:
+        - title using `?sortBy=title:asc` (ascending)
+        - dueDate using `?sortBy=dueDate:desc` (descending)
+        - createdAt using `?sortBy=createdAt:asc` (ascending)
+
+**Response format**
+
+    {
+        "status": "success",
+        "totalCount": 2,
+        "todos": [
+            {
+                "completed": false,
+                "_id": "5fa4d50bee4290413403462f",
+                "title": "start and working on backend task",
+                "dueDate": "2020-11-11T00:00:00.000Z",
+                "createdAt": "2020-11-06T04:46:03.942Z",
+                "updatedAt": "2020-11-06T04:46:03.942Z",
+                "__v": 0
+            },
+            {
+                "completed": false,
+                "_id": "5fa4c9b669993323744bf4d8",
+                "title": "start working on backend task",
+                "dueDate": "2020-11-11T00:00:00.000Z",
+                "createdAt": "2020-11-06T03:57:43.123Z",
+                "updatedAt": "2020-11-06T03:57:43.123Z",
+                "__v": 0
+            }
+        ],
+        "totalPages": 1,
+        "currentPage": 1
+    }
+
+#### application/json
