@@ -107,7 +107,7 @@ npm run test
 
 #### application/json
 
-**Endpoint** `http://localhost:4000/api/v1/todos/update/` - method (patch)
+**Endpoint** `http://localhost:4000/api/v1/todos/update/${id}` - method (patch)
 
 - updates todo item's completed or dueDate field
 
