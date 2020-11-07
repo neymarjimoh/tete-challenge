@@ -1,8 +1,12 @@
 import { Router } from "express";
 import validations from "../validations/todo.validation";
 import { validationMW, checkTodoId } from "../middlewares/validation";
-// import { socialControllers } from "../controllers";
-import { addTodoItem, getAllTodos, updateTodo } from "../controllers/todo";
+import {
+  addTodoItem,
+  getAllTodos,
+  updateTodo,
+  deleteTodo,
+} from "../controllers/todo";
 
 const todoRouter = Router();
 
@@ -26,5 +30,10 @@ todoRouter.patch(
   validationMW,
   updateTodo
 );
+
+/**
+ * delete todo item
+ */
+todoRouter.delete("/delete/:todoId", checkTodoId, deleteTodo);
 
 export default todoRouter;

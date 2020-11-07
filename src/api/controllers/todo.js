@@ -1,10 +1,10 @@
-const Todo = require("../models/todo").default;
-const { InternalServerError, CustomError } = require("../utils/customError");
-const responseHandler = require("../utils/responseHandler");
-const validateDate = require("../utils/checkDate").default;
-const isEmpty = require("../utils/isEmpty").default;
+import Todo from "../models/todo";
+import { InternalServerError, CustomError } from "../utils/customError";
+import responseHandler from "../utils/responseHandler";
+import validateDate from "../utils/checkDate";
+import isEmpty from "../utils/isEmpty";
 
-exports.addTodoItem = async (req, res, next) => {
+export async function addTodoItem(req, res, next) {
   try {
     const { title, dueDate } = req.body;
     const isdateValid = validateDate(dueDate);
@@ -32,9 +32,9 @@ exports.addTodoItem = async (req, res, next) => {
   } catch (error) {
     next(new InternalServerError(error));
   }
-};
+}
 
-exports.getAllTodos = async (req, res, next) => {
+export async function getAllTodos(req, res, next) {
   try {
     const queryOptions = {},
       sortOptions = {};
@@ -87,9 +87,9 @@ exports.getAllTodos = async (req, res, next) => {
   } catch (error) {
     next(new InternalServerError(error));
   }
-};
+}
 
-exports.updateTodo = async (req, res, next) => {
+export async function updateTodo(req, res, next) {
   try {
     const { todoId } = req.params;
     const { dueDate, completed } = req.body;
@@ -131,4 +131,22 @@ exports.updateTodo = async (req, res, next) => {
   } catch (error) {
     next(new InternalServerError(error));
   }
-};
+}
+
+export async function deleteTodo(req, res, next) {
+  const { todoId } = req.params;
+  try {
+    const todo = await Todo.findByIdAndDelete(todoId);
+    if (!todo) {
+      return next(
+        new CustomError(
+          404,
+          "Todo with the ID doesn't exist or has already been deleted"
+        )
+      );
+    }
+    return responseHandler(res, 200, todo, "Todo item deleted successfully");
+  } catch (error) {
+    next(new InternalServerError(error));
+  }
+}

@@ -37,7 +37,7 @@ app.use("/api/v1", apiRouter);
 
 // routes not found go here
 app.all("*", (req, res, next) => {
-  const error = new CustomError(404, "Oops! Resource not found");
+  const error = new CustomError(404, "Oops! Resource not found. Invalid URL");
   next(error);
 });
 

@@ -8,7 +8,11 @@ An application that helps teams to stay organised by storing tasks they want to 
 Node version - v12.16.1 (LTS)
 
 YARN version - v1.17.3
-
+## Getting Started
+**Clone this repo**
+```
+git clone https://github.com/neymarjimoh/tete-challenge.github
+```
 **Install all dependencies**
 ```
 npm install
@@ -107,7 +111,7 @@ npm run test
 
 #### application/json
 
-**Endpoint** `http://localhost:4000/api/v1/todos/update/` - method (patch)
+**Endpoint** `http://localhost:4000/api/v1/todos/update/${id}` - method (patch)
 
 - updates todo item's completed or dueDate field
 
@@ -131,6 +135,28 @@ npm run test
             "dueDate": "2020-11-15T00:00:00.000Z",
             "createdAt": "2020-11-06T03:57:43.123Z",
             "updatedAt": "2020-11-07T02:08:00.863Z",
+            "__v": 0
+        }
+    }
+
+#### application/json
+
+**Endpoint** `http://localhost:4000/api/v1/todos/delete/${id}` - method (delete)
+
+- deletes a todo item
+
+**Response format**
+
+    {
+        "status": "success",
+        "message": "Todo item deleted successfully",
+        "data": {
+            "completed": false,
+            "_id": "5fa4c3cc4f6dd824681e9025",
+            "title": "finisht backend task",
+            "dueDate": "2020-11-08T00:00:00.000Z",
+            "createdAt": "2020-11-06T03:32:28.287Z",
+            "updatedAt": "2020-11-06T03:32:28.287Z",
             "__v": 0
         }
     }
