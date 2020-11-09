@@ -4,6 +4,8 @@
 
 An application that helps teams to stay organised by storing tasks they want to complete on or before a particular due date, and checking them off as completed when they are done.
 
+Deployed on heroku [here](https://tete-challenge.herokuapp.com)
+
 **Environments**
 Node version - v12.16.1 (LTS)
 
@@ -30,6 +32,24 @@ npm run dev
 ```
 npm run test
 ```
+## Using Docker
+**Clone this repo**
+```
+git clone https://github.com/neymarjimoh/tete-challenge.git
+```
+**Install all dependencies**
+```
+npm install
+```
+**Update environment variables**
+```
+cp .env.example .env
+```
+**start up the containers**
+```
+docker-compose up
+```
+- You can view on `http://localhost:4100`
 
 ## ADD TODO -
 
