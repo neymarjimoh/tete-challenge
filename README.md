@@ -6,6 +6,9 @@ An application that helps teams to stay organised by storing tasks they want to 
 
 Deployed on heroku [here](https://tete-challenge.herokuapp.com)
 
+## Documentation
+You can view the docs [here](https://tete-challenge.herokuapp.com/docs)
+
 **Environments**
 Node version - v12.16.1 (LTS)
 

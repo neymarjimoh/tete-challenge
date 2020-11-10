@@ -1,0 +1,314 @@
+openapi: 3.0.0
+info:
+  version: 1.0.1
+  title: Tete Challenge TODO API documentation
+  description: Tete Challenge API endpoints.
+servers:
+  - url: '{protocol}://{host}:{port}/'
+    description: Development server (uses test data)
+    variables:
+      port:
+        enum:
+          - ''
+          - '4000'
+          - '4100'
+        default: ''
+      protocol:
+        enum:
+          - 'http'
+          - 'https'
+        default: 'http'
+        
+      host:
+        enum:
+          - '127.0.0.1'
+          - 'tete-challenge.herokuapp.com'
+        default: '127.0.0.1'
+
+components:
+  errors:
+    properties:
+      serverError:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              errors:
+                type: string
+      invalidIdError:
+        description: Invalid Todo ID entered!!
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+                - message
+              properties:
+                status:
+                  type: string
+                  format: 422
+                message:
+                  type: string
+                  format: "Invalid Todo ID entered!!"
+      notFoundError:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+  schemas:
+    Todo: 
+      type: object
+      required:
+        - title
+        - dueDate
+      properties:
+        title:
+          type: String
+          example: "go to the store"
+        dueDate: 
+          type: Date
+          example: "2020-12-02"
+        completed:
+          type: Boolean
+          example: false
+  responses:
+    SuccessResponse:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: string
+              format: "success"
+            message:
+              type: string
+            data:
+              type: object
+              $ref: "#/components/schemas/Todo"
+  parameters:
+    todoId:
+      in: path
+      name: todoId
+      description: Todo unique ID
+      required: true
+      schema:
+        type: string
+
+paths:
+  /api/v1/todos/new:
+    post:
+      summary: Create Todo
+      description: Creates a todo item
+      tags:
+        - Todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - title
+                - dueDate
+              properties:
+                title:
+                  type: String
+                  example: go to the store
+                dueDate:
+                  type: Date
+                  example: 2020-12-02
+      responses:
+        201:
+          description: Task added successfully
+          content:
+            $ref: "#/components/responses/SuccessResponse"
+        422: 
+          description: Validation errors
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        409:
+          description: Task with this title already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - message
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  message:
+                    type: string
+                    example: "Task with this title already exists"             
+        500:
+          description: Internal Server Error
+          content:
+            $ref: "#/components/errors/properties/serverError"
+ 
+  /api/v1/todos:
+    get:
+      summary: Gets list of todo items based on optional query params passed
+      tags:
+        - Todos
+      parameters:
+        - in: query
+          name: search
+          description: Filter items based on the search title entered
+          required: false
+          schema:
+            type: string
+            example: "?search=titlehere"
+        - in: query
+          name: page
+          description: The page number for pagination
+          default: 1
+          schema:
+            type: number
+            example: "?page=1"
+        - in: query
+         name: limit
+          description: number of items to skip and return for pagination
+          default: 10
+          schema:
+            type: string
+            example: "?limit=10"
+        - in: query
+          name: date
+          description: date to filter with
+          required: false
+          schema:
+            type: date
+            example: "?date=2021-01-22"
+        - in: query
+          name: completed
+          description: filter based on completed or not
+          required: false
+          schema:
+            type: string
+            example: "?completed=true"
+        - in: query
+          name: sortBy
+          description: sort in ascending or descending order by title, dueDate or createdAt
+          default: descending (desc) by createdAt
+          schema:
+            type: string
+            example: "?sortBy=title:asc"
+            format: "sortBy=field:order"
+      responses:
+        200:
+          description: Todos found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - data
+                  - totalPages
+                  - currentPage
+                  - totalCount
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Todo"
+                  totalPages:
+                    type: number
+                  currentPage:
+                    type: number
+        422: 
+          description: Validation errors
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        404:
+          description: No Matching task found
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        500:
+          description: Internal Server Error
+          content:
+            $ref: "#/components/errors/properties/serverError"
+
+  /api/v1/todos/update/{todoId}:
+    patch:
+      summary: Updates todo item's completed or dueDate field
+      tags:
+        - Todos
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/todoId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                completed:
+                  type: Boolean
+                  example: true
+                dueDate:
+                  type: Date
+                  example: 2022-02-01
+      responses:
+        201:
+          description: Task updated successfully
+          content:
+            $ref: "#/components/responses/SuccessResponse"
+        422: 
+          description: Validation errors
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        404:
+          description: Todo with the ID doesn't exist or has been deleted
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        500:
+          description: Internal Server Error
+          content:
+            $ref: "#/components/errors/properties/serverError"
+
+  /api/v1/todos/delete/{todoId}:
+    delete:
+      summary: Deletes a todo item
+      tags:
+        - Todos
+      parameters:
+        - in: path
+          $ref: "#/components/parameters/todoId"
+      responses:
+        200:
+          description: Todo item deleted successfully 
+          content:
+            $ref: "#/components/responses/SuccessResponse"
+        422:
+          $ref: "#/components/errors/properties/invalidIdError"
+        404:
+          description: User does not exist or has been deleted
+          content:
+            $ref: "#/components/errors/properties/notFoundError"
+        500:
+          description: Internal Server Error
+          content:
+            $ref: "#/components/errors/properties/serverError"

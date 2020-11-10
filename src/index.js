@@ -1,11 +1,16 @@
 import express from "express";
+import path from "path";
 import cors from "cors";
 import morgan from "morgan";
+import YAML from "yamljs";
+import swaggerUi from "swagger-ui-express";
 import dbConnect from "./api/config/db";
 import { CustomError } from "./api/utils/customError";
 import errorHandler from "./api/utils/errorHandler";
 import responseHandler from "./api/utils/responseHandler";
 import apiRouter from "./api/routes";
+
+const swaggerDocument = YAML.load(path.join(__dirname, "docs/swagger.yaml"));
 
 // conect to database
 dbConnect();
@@ -31,6 +36,13 @@ app.get("/", (req, res) => {
     "Welcome to Tete Coding Challenge! Backend API"
   );
 });
+
+// router for doc
+app.use(
+  ["/docs", "/api/v1/docs"],
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
 
 // router for api
 app.use("/api/v1", apiRouter);
