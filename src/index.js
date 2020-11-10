@@ -10,7 +10,9 @@ import errorHandler from "./api/utils/errorHandler";
 import responseHandler from "./api/utils/responseHandler";
 import apiRouter from "./api/routes";
 
-const swaggerDocument = YAML.load(path.join(__dirname, "docs/swagger.yaml"));
+const swaggerDocument = YAML.load(
+  path.join(__dirname, "/api/docs/swagger.yaml")
+);
 
 // conect to database
 dbConnect();
