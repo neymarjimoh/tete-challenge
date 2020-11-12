@@ -44,7 +44,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "mongoose": "^5.10.11",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
