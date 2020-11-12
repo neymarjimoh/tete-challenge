@@ -6,6 +6,7 @@ import { CustomError } from "./api/utils/customError";
 import errorHandler from "./api/utils/errorHandler";
 import responseHandler from "./api/utils/responseHandler";
 import apiRouter from "./api/routes";
+import logger from "./api/config/logger";
 
 // conect to database
 dbConnect();
@@ -13,8 +14,13 @@ dbConnect();
 // create express app
 const app = express();
 
-// set up morgan logs for dev
-app.use(morgan("dev"));
+// set up morgan logs with winston
+app.use(
+  morgan("combined", {
+    immediate: true,
+    stream: logger.stream,
+  })
+);
 
 // set up CORS
 app.use(cors());
@@ -43,6 +49,11 @@ app.all("*", (req, res, next) => {
 
 // default error handler
 app.use((err, req, res, next) => {
+  logger.error(
+    `${err.status || 500} - ${req.method} - ${err.message}  - ${
+      req.originalUrl
+    } - ${req.ip}`
+  );
   errorHandler(err, req, res, next);
 });
 

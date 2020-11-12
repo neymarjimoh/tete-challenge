@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/neymarjimoh/tete-challenge#readme",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "debug": "^4.2.0",
