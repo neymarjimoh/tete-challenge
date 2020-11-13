@@ -1,4 +1,5 @@
 import app from ".";
+import dbConnect from "./api/config/db";
 const { PORT } = require("./api/config/");
 const http = require("http");
 const log = require("debug")("log");
@@ -60,6 +61,7 @@ const startServer = () => {
 
 try {
   startServer();
+  dbConnect();
 } catch (error) {
   // handle errors here
   log(error.message);
