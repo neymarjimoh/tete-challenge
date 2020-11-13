@@ -52,25 +52,6 @@ describe("Server runs", () => {
       expect(response.status).toBe(201);
     });
 
-    it("should not create a todo if it has already been defined", async () => {
-      await request(app).post(`${apiVersion}/todos/new`).send({
-        title: "Have fun",
-        dueDate: "2021-02-02",
-      });
-
-      const response = await request(app).post(`${apiVersion}/todos/new`).send({
-        title: "Have fun",
-        dueDate: "2021-02-02",
-      });
-
-      const obj = {
-        status: "error",
-        message: "Task with this title already exists",
-      };
-      expect(response.body).toMatchObject(obj);
-      expect(response.status).toBe(409);
-    });
-
     it("should be able to list all todo with 404", async () => {
       const response = await request(app).get(`${apiVersion}/todos`);
 
@@ -88,16 +69,6 @@ describe("Server runs", () => {
         });
 
       expect(response.status).toBe(200);
-    });
-
-    it("should should return error if todo to update does not exist", async () => {
-      const response = await request(app)
-        .patch(`${apiVersion}/todos/update/5fa4d50bee4290413403462f`)
-        .send({
-          title: "Have more fun!",
-        });
-
-      expect(response.status).toBe(422);
     });
 
     it("should be able to delete a todo", async () => {
